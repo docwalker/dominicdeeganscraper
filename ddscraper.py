@@ -2,6 +2,56 @@
 Created on May 31, 2013
 
 @author: Doc
+
 '''
 
-#adding a comment to change code, testing eclipse pushing to github
+
+"""
+The following was taken from http://stackoverflow.com/questions/257409/download-image-file-from-the-html-page-source-using-python
+and then modified to my own needs.
+
+dumpimages.py
+    Downloads all the images on the supplied URL, and saves them to the
+    specified output file ("/test/" by default)
+
+Usage:
+    python dumpimages.py http://example.com/ [output]
+"""
+
+from bs4 import BeautifulSoup as bs
+from urllib2 import urlopen
+from urllib import urlretrieve
+
+import re
+
+def main(url, out_folder):
+    """Downloads all the images at 'url' to /test/"""
+    baseurl = url[:-24]
+    
+    for i in range(10):
+        
+        soup = bs(urlopen(url))    
+        comicDate = url[-10:]
+        comicDate = comicDate.replace('-',"")
+        
+        for image in soup.findAll("img"):
+            #print "Image: %(src)s" % image
+            
+            if comicDate in image["src"]:
+                imagePath = "/" + image["src"]
+                comicPath = url[:25] + imagePath
+                urlretrieve(comicPath, out_folder + str(i + 1) + ".gif")
+                
+                #after comic is done follow the next button to the next comic.
+                #messy but it works.  Find the word "Next" 
+                #findAll returns a list.  There is only one known elment so get that
+                #this element is a beautful soup tag element.  Can be treated as a dictionary
+                nextDate = soup.findAll(alt="Next")[0]
+                url = baseurl + nextDate.previous_element['href']
+
+    
+def _usage():
+    print "usage: python dumpimages.py http://example.com [outpath]"
+
+if __name__ == "__main__":
+    main(url,folder)
