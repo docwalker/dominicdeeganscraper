@@ -21,7 +21,7 @@ Usage:
 from bs4 import BeautifulSoup as bs
 from urllib2 import urlopen
 from urllib import urlretrieve
-
+import time
 import re
 
 def main(url, out_folder):
@@ -38,8 +38,9 @@ def main(url, out_folder):
             #print "Image: %(src)s" % image
             
             if comicDate in image["src"]:
-                imagePath = "/" + image["src"]
-                comicPath = url[:25] + imagePath
+                imagePath = image["src"]
+                comicPath = baseurl + imagePath
+                print comicPath
                 urlretrieve(comicPath, out_folder + str(i + 1) + ".gif")
                 
                 #after comic is done follow the next button to the next comic.
@@ -50,9 +51,11 @@ def main(url, out_folder):
                 url = baseurl + nextDate.previous_element['href']
                 i = i + 1
                 
+                #artificial sleep so we don't spam the host servers too much.
+                time.sleep(3)
     
 def _usage():
     print "usage: python dumpimages.py http://example.com [outpath]"
 
 if __name__ == "__main__":
-    main("http://dominic-deegan.com/view.php?date=2002-05-21", "C:\Comics\")
+    main("http://www.dominic-deegan.com/view.php?date=2002-05-21", "D:\\Comics\\Dominic-Deegan\\")
