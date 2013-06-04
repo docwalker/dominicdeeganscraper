@@ -40,7 +40,7 @@ def main(url, out_folder):
             if comicDate in image["src"]:
                 imagePath = image["src"]
                 comicPath = baseurl + imagePath
-                print comicPath
+                
                 urlretrieve(comicPath, out_folder + str(i + 1) + ".gif")
                 
                 #after comic is done follow the next button to the next comic.
