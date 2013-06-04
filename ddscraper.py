@@ -27,8 +27,8 @@ import re
 def main(url, out_folder):
     """Downloads all the images at 'url' to /test/"""
     baseurl = url[:-24]
-    
-    for i in range(10):
+    i = 0
+    while(True):
         
         soup = bs(urlopen(url))    
         comicDate = url[-10:]
@@ -48,10 +48,11 @@ def main(url, out_folder):
                 #this element is a beautful soup tag element.  Can be treated as a dictionary
                 nextDate = soup.findAll(alt="Next")[0]
                 url = baseurl + nextDate.previous_element['href']
-
+                i = i + 1
+                
     
 def _usage():
     print "usage: python dumpimages.py http://example.com [outpath]"
 
 if __name__ == "__main__":
-    main(url,folder)
+    main()
