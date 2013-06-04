@@ -55,4 +55,4 @@ def _usage():
     print "usage: python dumpimages.py http://example.com [outpath]"
 
 if __name__ == "__main__":
-    main()
+    main("http://dominic-deegan.com/view.php?date=2002-05-21", "C:\Comics\")
